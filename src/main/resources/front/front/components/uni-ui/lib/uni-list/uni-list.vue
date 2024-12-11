@@ -1,0 +1,72 @@
+<template>
+  <!-- #ifndef APP-NVUE -->
+  <view class="uni-list">
+    <slot/>
+  </view>
+  <!-- #endif -->
+  <!-- #ifdef APP-NVUE -->
+  <list :enableBackToTop="enableBackToTop" :scroll-y="scrollY" class="uni-list" loadmoreoffset="15"
+        @loadmore="loadMore">
+    <slot/>
+  </list>
+  <!-- #endif -->
+</template>
+
+<script>
+export default {
+  name: 'UniList',
+  'mp-weixin': {
+    options: {
+      multipleSlots: false
+    }
+  },
+  props: {
+    enableBackToTop: {
+      type: [Boolean, String],
+      default: false
+    },
+    scrollY: {
+      type: [Boolean, String],
+      default: false
+    }
+  },
+  provide() {
+    return {
+      list: this
+    }
+  },
+  created() {
+    this.firstChildAppend = false
+  },
+  methods: {
+    loadMore(e) {
+      this.$emit("scrolltolower");
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.uni-list {
+  /* #ifndef APP-NVUE */
+  display: flex;
+  /* #endif */
+  background-color: $uni-bg-color;
+  position: relative;
+  flex-direction: column;
+  // border-bottom-color: $uni-border-color;
+  // border-bottom-style: solid;
+  // border-bottom-width: 1px;
+}
+
+/* #ifndef APP-NVUE */
+.uni-list:before {
+  height: 0;
+}
+
+.uni-list:after {
+  height: 0;
+}
+
+/* #endif */
+
+</style>
